@@ -8,16 +8,26 @@ public abstract class Container {
     protected double maximumPayloadInKg;
     protected boolean isLoaded;
 
-    public Container( double massInKg,double heightInCm, double weightOfContainerInKg, double weightOfCargoInKg, double depthOfContainerInCm, String serialNumber, double maximumPayloadInKg, boolean isLoaded) {
+    private static int lastContainerNumber = 0;
+
+    public Container( double massInKg,double heightInCm, double weightOfContainerInKg, double weightOfCargoInKg, double depthOfContainerInCm, String containerTypeCode, double maximumPayloadInKg, boolean isLoaded) {
         this.massInKg = massInKg;
         this.heightInCm = heightInCm;
         this.weightOfContainerInKg = weightOfContainerInKg;
         this.weightOfCargoInKg = weightOfCargoInKg;
         this.depthOfContainerInCm = depthOfContainerInCm;
-        this.serialNumber = serialNumber;
+        this.serialNumber = generateSerialNumber(containerTypeCode);
         this.maximumPayloadInKg = maximumPayloadInKg;
         this.isLoaded = isLoaded;
     }
+    private String generateSerialNumber(String containerTypeCode) {
+        lastContainerNumber++;
+        return String.format("KON-%s-%d", containerTypeCode.toUpperCase(), lastContainerNumber);
+    }
+    public String getSerialNumber() {
+        return this.serialNumber;
+    }
+
 
     public void loadContainer(double weightOfCargoInKg, double maximumPayloadInKg) {
         if(this.weightOfCargoInKg > this.maximumPayloadInKg) {
@@ -33,6 +43,7 @@ public abstract class Container {
 
         }
     }
+    public abstract String printContainerInfo();
 
 
 }
